@@ -1,0 +1,74 @@
+#!/usr/bin/env lua
+
+-------------------------------------------------------------------------------
+-- Starts the Xavante Web server.
+--
+-- See xavante/config.lua and the online documentation for configuration details.
+--
+-- Authors: Javier Guerra and Andre Carregal
+-- Copyright (c) 2004-2007 Kepler Project
+--
+-- $Id: xavante_start,v 1.1 2008/06/30 14:29:59 carregal Exp $
+-------------------------------------------------------------------------------
+
+pcall(require, "luarocks.require")
+
+require "kepler_init"
+
+XAVANTE_CFG = KEPLER_CONF.."/xavante/config.lua"
+XAVANTE_LOG = KEPLER_LOG.."/xavante.log"
+XAVANTE_TMP = KEPLER_TMP
+XAVANTE_WEB = KEPLER_WEB
+
+local tostring = tostring
+
+local log = io.open(XAVANTE_LOG, "a+")
+io.stdout = log
+io.stderr = log
+print = function (...)
+  local nargs = select('#', ...)
+  for i = 1, nargs-1 do
+    log:write(tostring((select(i, ...))))
+    log:write("\t")
+  end
+  log:write(tostring(select(nargs, ...)))
+  log:write("\n")
+end
+
+XAVANTE_ISFINISHED = XAVANTE_ISFINISHED or function() return false end
+
+local res, err = pcall(require, "xavante")
+
+if not res then
+    io.stderr:write(err .. "\n")
+else
+    ---------------------------------------------------------------------------
+    -- Loads the configuration file and starts Xavante
+    --
+    -- XAVANTE_ISFINISHED and XAVANTE_TIMEOUT are optional globals that can
+    -- control how Xavante will behave when being externally controlled.
+    -- XAVANTE_ISFINISHED is a function to be called on every step of Xavante,
+    -- XAVANTE_TIMEOUT is the timeout to be used by Copas.
+    ---------------------------------------------------------------------------
+    io.stdout:write("[Xavante launcher] Starting Xavante...\n")
+  
+    -- tries to load the user configuration
+    res, err = loadfile(XAVANTE_CFG)
+    if res then
+        res()
+    else
+        error("Error loading user config.lua" .. err)
+    end
+    res, err = pcall(xavante.start, function (...)
+          log:flush()
+          return XAVANTE_ISFINISHED(...)
+    end, XAVANTE_TIMEOUT)
+    if not res then
+        io.stderr:write(err .. "\n")
+    else
+        io.stderr:write("[Xavante launcher] Xavante stopped\n")
+    end
+end
+
+log:close()
+

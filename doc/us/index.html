@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Kepler: The Lua Web Development Platform</title>
+    <link rel="stylesheet" href="http://www.keplerproject.org/doc.css" type="text/css"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"><a href="http://www.keplerproject.org">
+		<img alt="Kepler" src="kepler.png"/>
+	</a></div>
+	<div id="product_name"><big><strong>Kepler</strong></big></div>
+	<div id="product_description">The Lua Web Development Platform</div>
+</div> <!-- id="product" -->
+
+<div id="main">
+	
+<div id="navigation">
+<h1>Kepler</h1>
+	<ul>
+		<li><strong>Home</strong>
+			<ul> 
+				<li><a href="index.html#overview">Overview</a></li>
+				<li><a href="index.html#status">Status</a></li>
+				<li><a href="index.html#download">Download</a></li>
+				<li><a href="index.html#history">History</a></li>
+				<li><a href="index.html#credits">Credits</a></li>
+				<li><a href="index.html#contact">Contact us</a></li>
+			</ul>
+		</li>
+        <li><a href="http://luaforge.net/projects/kepler/">Project</a>
+            <ul>
+                <li><a href="bugtracker.html">Bug Trackers</a></li>
+                <li><a href="http://luaforge.net/scm/?group_id=104">CVS</a></li>
+            </ul>
+        </li>
+		<li><a href="license.html">License</a></li>
+	</ul>
+</div> <!-- id="navigation" -->
+
+<div id="content">
+
+<h2><a name="overview"></a>Overview</h2>
+
+<p>Kepler is a <a href="http://www.lua.org">Lua</a> web development platform
+that offers the same advantages of Lua. Kepler is <strong>simple</strong>,
+<strong>portable</strong>, <strong>light</strong>, <strong>embeddable</strong>
+and <strong>extensible</strong></p>
+
+<p>The Kepler Platform consists in distributions for Windows, Unix and OSX and allows
+the development of Web Applications using WSAPI, Orbit or CGILua technologies;
+the user can also choose to use additional modules to support SQL, XML, Zip, MD5, etc.</p>
+
+<p>Kepler uses <a href="http://www.luarocks.org">LuaRocks</a> as its main deployment option, but can be used without LuaRocks if needed.
+The best option for deployment without LuaRocks is to first do a normal deployment (using LuaRocks)
+in a separate environment, then copying the modules to the final environment.
+This is the recommended solution for embedded scenarios
+(doing the LuaRocks-based deployment in your cross-compilation environment).</p>
+
+<p>Kepler is free software and uses the same
+<a href="license.html">license</a> as Lua 5.1.</p>
+
+<p>More information about the project can be found at the 
+<a class='wikilink' href='http://www.keplerproject.org/en/General_FAQ'>Kepler FAQ</a>.</p>
+
+<h2><a name="status"></a>Status</h2>
+
+<p>Current version is 1.1. It was developed for Lua 5.1.</p>
+
+<h2><a name="download"></a>Download</h2>
+
+<p>The Kepler Unix installer can be downloaded from its
+<a href="http://luaforge.net/projects/kepler/files">Lua Forge</a> page.
+It installs Lua 5.1.3, the latest LuaRocks version, and Kepler 1.1.
+If you already have Lua and LuaRocks and just with to install Kepler,
+follow the <a href="http://www.keplerproject.org/en/Installation">installation</a> instructions.</p>
+	
+<p>Windows users need to install LuaRocks first and then follow the
+<a href="http://www.keplerproject.org/en/Installation">installation</a> instructions.</p>
+
+<h2><a name="history"></a>History</h2>
+
+<dl class="history">
+    <dt><strong>Version 1.1</strong> [10/Jun/2008]</dt>
+	<dd><ul>
+		<li>Uses LuaRocks 0.5.2 as the main deployment option</li>
+		<li>Offers a Unix installer for Lua and LuaRocks</li>
+		<li>Based on WSAPI</li>
+		<li>Includes Orbit as another web development option (besides CGILua and WSAPI)</li>
+		<li>Modules:
+        	<ul>
+        		<li>CGILua 5.1.2</li>
+        		<li>Copas 1.1.3</li>
+				<li>Cosmo 8.04.14</li>
+				<li>Coxpcall 1.13</li>
+				<li>LPeg 0.8.1</li>
+        		<li>LuaFileSystem 1.4.1</li>
+				<li>LuaSocket 2.0.2</li>
+				<li>Orbit 2.0.1</li>
+        		<li>Rings 1.2.1</li>
+				<li>WSAPI 1.0</li>
+        		<li>Xavante 2.0</li>
+        	</ul>
+        </li>
+	</ul></dd>
+
+    <dt><strong>Version 1.1 Beta 2</strong> [21/Nov/2007]</dt>
+    <dd>
+    <ul>
+        <li>Offers a CGILua application launcher (<code>app.lua</code>)</li>
+        <li>Modules:
+        	<ul>
+        		<li>Xavante 2.0 Beta</li>
+        		<li>CGILua 5.1.1</li>
+        		<li>LuaSQL 2.1.1</li>
+        		<li>Copas 1.1.1</li>
+        		<li>LuaFileSystem 1.3.0</li>
+        		<li>Rings 1.1.0</li>
+        		<li>LuaExpat 1.1.0</li>
+        		<li>LuaLogging 1.1.4</li>
+        		<li>LuaZip 1.2.3</li>
+        		<li>MD5 1.1.0</li>
+        	</ul>
+        </li>
+	</ul>
+    </dd>
+
+    <dt><strong>Version 1.1 Beta 1</strong> [31/Aug/2007]</dt>
+    <dd>
+    <ul>
+		<li>Uses Lua 5.1</li>
+        <li>New Unix <code>configure</code> installer, much more flexible.</li>
+        <li>Modules:
+        	<ul>
+        		<li>Xavante 1.3.1</li>
+        		<li>CGILua 5.1.0</li>
+        		<li>LuaSQL 2.1.0</li>
+        		<li>Copas 1.1.1</li>
+        		<li>LuaFileSystem 1.2.1</li>
+        		<li>Rings 1.1.0</li>
+        		<li>LuaExpat 1.1.0</li>
+        		<li>LuaLogging 1.1.3</li>
+        		<li>LuaZip 1.2.3</li>
+        		<li>MD5 1.0.2</li>
+        	</ul>
+        </li>
+	</ul>
+    </dd>
+    
+    <dt><a href="http://www.keplerproject.org/kepler/1.0">Version 1.0</a>[30/Nov/2006]</dt>
+    <dd>
+    <ul>
+        <li>New modules added: Rings, MD5 and LuaCOM (for the Windows version)</li>
+        <li>Removed some modules (LDAP, SOAP, XML-RPC)</li>
+        <li>New directory structure</li>
+        <li>New bootstrapping sequence</li>
+        <li>New Unix installation process, using configure &amp;&amp; make</li>
+	</ul>
+    </dd>
+    
+    <dt><strong>Version 1.0 Beta</strong> [23/Jul/2005]</dt>
+    <dd>
+    <ul>
+        <li>First public Version</li>
+        <li>Windows binary installer</li>
+        <li>Unix source based installer</li>
+	</ul>
+    </dd>
+</dl>
+
+<h2><a name="credits"></a>Credits</h2>
+
+<p>Kepler was designed by the Kepler Team as part of the
+<a href="http://www.keplerproject.org">Kepler Project</a>
+which holds its copyright.</p>
+
+<h2><a name="contact"></a>Contact us</h2>
+
+<p>For more information please
+<a href="mailto:info-NO-SPAM-THANKS@keplerproject.org">contact us</a>.
+Comments are welcome!</p>
+
+<p>You can also reach other Kepler developers and users on the Kepler Project
+<a href="http://luaforge.net/mail/?group_id=104">mailing list</a>.</p>
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<p><a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0!</a></p>
+	<p><small>$Id: index.html,v 1.1 2008/06/30 14:30:00 carregal Exp $</small></p>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+
+<IfModule mod_cgi.c>
+  Options +ExecCGI
+  AddHandler cgi-script .lua
+  AddHandler cgi-script .lp
+  AddHandler cgi-script .ws
+  AddHandler cgi-script .op
+  DirectoryIndex index.lp
+</IfModule>

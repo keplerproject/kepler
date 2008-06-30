@@ -1,0 +1,211 @@
+#!/usr/bin/env lua
+
+KEPLER_INIT = [==[
+
+--
+-- Kepler bootstrap file
+-- Defines the default directories for Kepler
+--
+
+-- Kepler applications directory
+KEPLER_APPS = [[KEPLER_APPS]]
+
+-- Kepler configuration directory
+KEPLER_CONF = [[KEPLER_CONF]]
+
+-- Kepler logs directory
+KEPLER_LOG = [[KEPLER_LOG]]
+
+-- Kepler temporary directory
+KEPLER_TMP = [[KEPLER_TMP]]
+
+-- Kepler default web directory
+KEPLER_WEB  = [[KEPLER_WEB]]
+
+-- CGILua globals (usually defined using KEPLER globals)
+CGILUA_APPS = KEPLER_APPS.."/cgilua"
+CGILUA_CONF = KEPLER_CONF.."/cgilua"
+CGILUA_TMP = KEPLER_TMP
+CGILUA_ISDIRECT = true
+
+RINGS_CGILUA_GLOBALS = {
+    "KEPLER_APPS", "KEPLER_CONF", "KEPLER_LIB", 
+    "KEPLER_LOG", "KEPLER_LUA", "KEPLER_TMP", "KEPLER_WEB",
+    "CGILUA_APPS", "CGILUA_CONF", "CGILUA_TMP", "CGILUA_ISDIRECT",
+}
+
+]==]
+
+HELP = [[
+This is the Kepler 1.1 setup.
+
+--help                      This help.
+--prefix=DIR                Prefix where Kepler should be installed.
+                            Default is /usr/local/kepler 
+                            (C:\LuaRocks\Kepler on Windows)
+--conf=DIR                  Prefix where config files should be installed.
+                            Default is $(PREFIX)/etc
+--web=DIR                   Prefix for Kepler's document root
+                            Default is $(PREFIX)/htdocs
+--log=DIR                   Directory for Kepler logs.
+                            Default is $(PREFIX)/log
+--apps=DIR                  Prefix for Kepler applications
+                            Default is $(PREFIX)/apps
+--tmp=DIR                   Directory for temporary files
+                            Default is /tmp (C:\WINDOWS\Temp on Windows)
+]]
+
+args = { ... }
+
+test = os.execute("mkdir -p /tmp/foo")
+if test == 0 then
+   PREFIX = "/usr/local/kepler"
+else
+   PREFIX = "c:\\LuaRocks\\kepler"
+   KEPLER_TMP = "c:\\WINDOWS\\Temp"
+end
+
+for _, arg in ipairs(args) do
+  if arg == "--help" then
+    print(HELP)
+    os.exit(0)   
+  end
+  local name, val = arg:match("^%-%-(%w+)=(.*)$")
+  if name == "conf" then
+    KEPLER_CONF = val
+  elseif name == "prefix" then
+    PREFIX = val
+  elseif name == "web" then
+    KEPLER_WEB = val
+  elseif name == "apps" then
+    KEPLER_APPS = val
+  elseif name == "tmp" then
+    KEPLER_TMP = val
+  elseif name == "log" then
+    KEPLER_LOG = val
+  else
+    print("Error: invalid option. Please see setup-kepler --help")
+    os.exit(1)
+  end
+end
+
+KEPLER_CONF = KEPLER_CONF or PREFIX .. "/etc"
+KEPLER_WEB = KEPLER_WEB or PREFIX .. "/htdocs"
+KEPLER_APPS = KEPLER_APPS or PREFIX .. "/apps"
+KEPLER_TMP = KEPLER_TMP or "/tmp"
+KEPLER_LOG = KEPLER_LOG or PREFIX .. "/log"
+
+print("This is the Kepler 1.1 setup.")
+print()
+print("Kepler configuration: " .. KEPLER_CONF)
+print("Kepler web root:      " .. KEPLER_WEB)
+print("Kepler apps:          " .. KEPLER_APPS)
+print("Kepler logs:          " .. KEPLER_LOG)
+print("Kepler temp dir:      " .. KEPLER_TMP)
+print()
+io.write("Proceed with setup? [Y/n] ")
+yesno = io.read("*l")
+if yesno:match("%s*n%s*") then
+  print("Setup aborted")
+  os.exit(1)
+end
+
+this = arg[0]
+
+kepler_install_dir = this:match("^(.+)/bin/setup%-kepler$")  
+
+print()
+
+kepler_init = kepler_install_dir .. "/lua/kepler_init.lua"
+
+ki = loadfile(kepler_init)
+setfenv(ki, { error = error })
+ok = pcall(ki)
+
+if ok then
+  io.write(kepler_init .. " already exists, replace it? [y/N] ")
+  yesno = io.read("*l")
+  if not yesno:match("%s*y%s*") then
+    print("Setup aborted")
+    os.exit(1)
+  end
+end
+
+print("Writing " .. kepler_init)
+
+function replace(...)
+  for _, var in ipairs{ ... } do
+    KEPLER_INIT = KEPLER_INIT:gsub("%[%[KEPLER_" .. var .. "%]%]", 
+ 			     "[[" .. _G["KEPLER_" .. var] .. "]]")
+  end
+end
+
+replace("CONF", "WEB", "APPS", "TMP", "LOG")
+
+file = io.open(kepler_init, "w+")
+file:write(KEPLER_INIT)
+file:close()
+
+test = os.execute("mkdir -p /tmp/foo")
+if test == 0 then
+  write_conf = true
+  file = io.open(KEPLER_CONF .. "/cgilua")
+  if file then
+    file:close()
+    io.write("You have a previous Kepler configuration at " .. KEPLER_CONF .. ", replace it? [y/N] ")
+    yesno = io.read("*l")
+    if not yesno:match("%s*y%s*") then
+      write_conf = false
+    end
+  end
+  if write_conf then
+    print("Copying configuration files to " .. KEPLER_CONF)
+    os.execute("mkdir -p " .. KEPLER_CONF)
+    os.execute("cp -r " .. kepler_install_dir .. "/conf/* " .. KEPLER_CONF) 
+  end
+  print("Copying docs and sample scripts to " .. KEPLER_WEB)
+  os.execute("mkdir -p " .. KEPLER_WEB)
+  os.execute("mkdir -p " .. KEPLER_WEB .. "/doc")
+  os.execute("mkdir -p " .. KEPLER_WEB .. "/doc/kepler")
+  os.execute("cp -r " .. kepler_install_dir .. "/web/* " .. KEPLER_WEB) 
+  os.execute("cp -r " .. kepler_install_dir .. "/doc/us/* " .. KEPLER_WEB .. "/doc/kepler") 
+  os.execute("cp -r " .. kepler_install_dir .. "/css/* " .. KEPLER_WEB ..
+    "/css/") 
+  print("Creating " .. KEPLER_APPS)
+  os.execute("mkdir -p " .. KEPLER_APPS)
+  print("Creating " .. KEPLER_TMP)
+  os.execute("mkdir -p " .. KEPLER_TMP)
+  print("Creating " .. KEPLER_LOG)
+  os.execute("mkdir -p " .. KEPLER_LOG)
+else
+  -- Windows
+  write_conf = true
+  file = io.open(KEPLER_CONF)
+  if file then
+    file:close()
+    io.write(KEPLER_CONF .. " already exists, replace it? [y/N] ")
+    yesno = io.read("*l")
+    if not yesno:match("%s*y%s*") then
+      write_conf = false
+    end
+  end
+  if write_conf then
+    print("Copying configuration files to " .. KEPLER_CONF)
+    os.execute("if not exist \"" .. KEPLER_CONF .. "\" mkdir \"" .. KEPLER_CONF .. "\"")
+    os.execute("xcopy /E \"" .. kepler_install_dir .. "\\conf\" \"" .. KEPLER_CONF .. "\\\"")
+  end
+  print("Copying docs and sample scripts to " .. KEPLER_WEB)
+  os.execute("if not exist \"" .. KEPLER_WEB .. "\" mkdir \"" .. KEPLER_WEB .. "\"")
+  os.execute("xcopy /E \"" .. kepler_install_dir .. "\\web\" \"" .. KEPLER_WEB .. "\\\"")
+  os.execute("if not exist \"" .. KEPLER_WEB .. "\\doc\" mkdir \"" .. KEPLER_WEB .. "\\doc\"")
+  os.execute("xcopy /E \"" .. kepler_install_dir .. "\\doc\us" \"" .. KEPLER_WEB .. "\\doc\\kepler\"")
+  os.execute("xcopy /E \"" .. kepler_install_dir .. "\\css\" \"" .. KEPLER_WEB .. "\\css\\\"")
+  print("Creating " .. KEPLER_APPS)
+  os.execute("if not exist \"" .. KEPLER_APPS .. "\" mkdir \"" .. KEPLER_APPS .. "\"")
+  print("Creating " .. KEPLER_TMP)
+  os.execute("if not exist \"" .. KEPLER_TMP .. "\" mkdir \"" .. KEPLER_TMP .. "\"")
+  print("Creating " .. KEPLER_LOG)
+  os.execute("if not exist \"" .. KEPLER_LOG .. "\" mkdir \"" .. KEPLER_LOG .. "\"")
+end
+
+print("Enjoy Kepler!")

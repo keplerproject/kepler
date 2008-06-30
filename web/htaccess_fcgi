@@ -1,0 +1,13 @@
+
+<IfModule mod_fcgid.c>
+  Options +ExecCGI
+  AddHandler fcgid-script .lua
+  AddHandler fcgid-script .lp
+  AddHandler fcgid-script .ws
+  AddHandler fcgid-script .op
+  FCGIWrapper "/usr/bin/env cgilua.fcgi" .lua
+  FCGIWrapper "/usr/bin/env cgilua.fcgi" .lp
+  FCGIWrapper "/usr/bin/env wsapi.fcgi" .ws
+  FCGIWrapper "/usr/bin/env op.fcgi" .op
+  DirectoryIndex index.lp
+</IfModule>
