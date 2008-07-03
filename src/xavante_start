@@ -8,7 +8,7 @@
 -- Authors: Javier Guerra and Andre Carregal
 -- Copyright (c) 2004-2007 Kepler Project
 --
--- $Id: xavante_start,v 1.1 2008/06/30 14:29:59 carregal Exp $
+-- $Id: xavante_start,v 1.2 2008/07/03 20:23:01 carregal Exp $
 -------------------------------------------------------------------------------
 
 pcall(require, "luarocks.require")
@@ -23,6 +23,11 @@ XAVANTE_WEB = KEPLER_WEB
 local tostring = tostring
 
 local log = io.open(XAVANTE_LOG, "a+")
+
+if not log then
+	error("Could not open log file: "..XAVANTE_LOG)
+end
+
 io.stdout = log
 io.stderr = log
 print = function (...)
