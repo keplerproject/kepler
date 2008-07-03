@@ -198,10 +198,15 @@ for _, v in ipairs(vars) do %>
 
 <h2>Multiple Output</h2>
 
-<p>The next tests should show numbers, from 1 to 3, and the string "OK" together, without spaces.</p>
+<p>The next test should show numbers, from 1 to 3, and the string "OK" together, without spaces.</p>
 
 <pre class="example">
 cgilua.put(1, 2, 3, "OK")   --> <% cgilua.put(1, 2, 3, "OK") %>
+</pre>
+
+<p>The next test should show numbers, from 1 to 3, and the string "OK" separated by tabs.</p>
+  	 
+<pre class="example">
 cgilua.print(1, 2, 3, "OK") --> <% cgilua.print(1, 2, 3, "OK") %>
 </pre>
 
@@ -237,7 +242,7 @@ Expected value: 1, actual value: <%= x %>.
 
 <div id="about">
 	<p><a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a></p>
-	<p><small>$Id: test.lp,v 1.1 2008/06/30 14:29:59 carregal Exp $</small></p>
+	<p><small>$Id: test.lp,v 1.2 2008/07/03 20:31:24 carregal Exp $</small></p>
 </div> <!-- id="about" -->
 
 </div> <!-- id="container" -->
