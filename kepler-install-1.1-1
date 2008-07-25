@@ -149,12 +149,14 @@ echo
 echo "The name of the Lua executable is lua$LUA_SUFFIX"
 echo "Lua installation prefix: $PREFIX"
 echo "Include files:           $PREFIX/include"
-echo "Document root:           $WEB"
-echo "Temporary files:         $TMP"
-echo
-echo "Will also create $PREFIX/bin, $PREFIX/etc,"
-echo " $PREFIX/lib, $PREFIX/share, $PREFIX/man,"
-echo " $PREFIX/kepler, and $PREFIX/rocks"
+if ! [ $SKIP_KEPLER = "yes" ] 
+then
+  echo "Document root:           $WEB"
+  echo "Temporary files:         $TMP"
+  echo
+  echo "Will create bin, etc, lib, share, man, kepler,"
+  echo "and rocks directories in $PREFIX"
+fi
 echo
 echo "Proceed with setup? [Y/n] "
 read yesno
