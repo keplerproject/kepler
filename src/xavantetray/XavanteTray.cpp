@@ -65,7 +65,26 @@ int CheckExit(lua_State *L) {
   return 1;
 }
 
+static DWORD GetModulePath( HINSTANCE hInst, LPTSTR pszBuffer, DWORD dwSize )
+//
+//	Return the size of the path in bytes.
+{
+	DWORD dwLength = GetModuleFileName( hInst, pszBuffer, dwSize );
+	if( dwLength )
+	{
+		while( dwLength && pszBuffer[ dwLength ] != '.' )
+		{
+			dwLength--;
+		}
+
+		if( dwLength )
+			pszBuffer[ dwLength ] = '\000';
+	}
+	return dwLength;
+}
+
 void LuaThread(void *) {
+  DWORD dwLength;
   exit_thread = 0;
 
   // Initialize Lua
@@ -82,6 +101,19 @@ void LuaThread(void *) {
   // Set select timeout
   lua_pushnumber(L, SELECT_TIMEOUT);
   lua_setglobal(L, "XAVANTE_TIMEOUT");
+
+  // Call helper to find paths
+  dwLength = GetModulePath( NULL, name, MAX_PATH );
+  if(dwLength) { /* Optional bootstrap */
+    strcat(name, ".lua");
+    if(!luaL_loadfile (L, name)) {
+      if(lua_pcall (L, 0, LUA_MULTRET, 0)) {
+	report (L);
+	lua_close (L);
+	return EXIT_FAILURE;
+      }
+    }
+  }
 
   // Start Xavante
   if (luaL_loadstring(L, xavante_start)) {
