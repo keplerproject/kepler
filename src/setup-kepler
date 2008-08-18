@@ -57,20 +57,13 @@ This is the Kepler 1.1 setup.
 
 args = { ... }
 
-test = os.execute("mkdir -p /tmp/foo")
-if test == 0 then
-   PREFIX = "/usr/local/kepler"
-else
-   PREFIX = "c:\\LuaRocks\\kepler"
-   KEPLER_TMP = "c:\\WINDOWS\\Temp"
-end
-
 for _, arg in ipairs(args) do
   if arg == "--help" then
     print(HELP)
     os.exit(0)   
   end
   local name, val = arg:match("^%-%-(%w+)=(.*)$")
+  if val == "" then val = nil end
   if name == "conf" then
     KEPLER_CONF = val
   elseif name == "prefix" then
@@ -83,10 +76,24 @@ for _, arg in ipairs(args) do
     KEPLER_TMP = val
   elseif name == "log" then
     KEPLER_LOG = val
+  elseif name == "plat" then
+    platform = val
   else
     print("Error: invalid option. Please see setup-kepler --help")
     os.exit(1)
   end
+end
+
+if not platform then
+  test = os.execute("mkdir -p /tmp/foo")
+  if test == 0 then platform = "unix" else platform = "windows" end
+end
+
+if platform == "unix" then
+   PREFIX = PREFIX or "/usr/local/kepler"
+else
+   PREFIX = PREFIX or "c:\\LuaRocks\\kepler"
+   KEPLER_TMP = KEPLER_TMP or "c:\\WINDOWS\\Temp"
 end
 
 KEPLER_CONF = KEPLER_CONF or PREFIX .. "/etc"
@@ -146,8 +153,7 @@ file = io.open(kepler_init, "w+")
 file:write(KEPLER_INIT)
 file:close()
 
-test = os.execute("mkdir -p /tmp/foo")
-if test == 0 then
+if platform == "unix" then
   write_conf = true
   file = io.open(KEPLER_CONF .. "/cgilua")
   if file then
@@ -198,7 +204,7 @@ else
   os.execute("if not exist \"" .. KEPLER_WEB .. "\" mkdir \"" .. KEPLER_WEB .. "\"")
   os.execute("xcopy /E \"" .. kepler_install_dir .. "\\web\" \"" .. KEPLER_WEB .. "\\\"")
   os.execute("if not exist \"" .. KEPLER_WEB .. "\\doc\" mkdir \"" .. KEPLER_WEB .. "\\doc\"")
-  os.execute("xcopy /E \"" .. kepler_install_dir .. "\\doc\us" \"" .. KEPLER_WEB .. "\\doc\\kepler\"")
+  os.execute("xcopy /E \"" .. kepler_install_dir .. "\\doc\\us\" \"" .. KEPLER_WEB .. "\\doc\\kepler\"")
   os.execute("xcopy /E \"" .. kepler_install_dir .. "\\css\" \"" .. KEPLER_WEB .. "\\css\\\"")
   print("Creating " .. KEPLER_APPS)
   os.execute("if not exist \"" .. KEPLER_APPS .. "\" mkdir \"" .. KEPLER_APPS .. "\"")
