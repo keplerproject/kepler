@@ -52,7 +52,7 @@ hooks = {
       post_install = "$(SCRIPTS_DIR)setup-kepler --prefix=$(LUAROCKS_PREFIX)/kepler --web=$(KEPLER_WEB) --plat=unix"
     },
     windows = {
-      post_install = "$(SCRIPTS_DIR)setup-kepler --prefix=$(LUAROCKS_PREFIX)/kepler --web=$(KEPLER_WEB) --plat=windows"
+      post_install = "$(SCRIPTS_DIR)setup-kepler --prefix=$(ROCKS_TREE)/kepler --web=$(KEPLER_WEB) --plat=windows"
     }
   }
 }

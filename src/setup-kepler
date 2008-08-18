@@ -64,6 +64,7 @@ for _, arg in ipairs(args) do
   end
   local name, val = arg:match("^%-%-(%w+)=(.*)$")
   if val == "" then val = nil end
+  if val:match("^%$%([%w_]+%)$") then val = nil end
   if name == "conf" then
     KEPLER_CONF = val
   elseif name == "prefix" then
