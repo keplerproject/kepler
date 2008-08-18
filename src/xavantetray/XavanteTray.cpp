@@ -84,6 +84,7 @@ static DWORD GetModulePath( HINSTANCE hInst, LPTSTR pszBuffer, DWORD dwSize )
 }
 
 void LuaThread(void *) {
+  char name[MAX_PATH];
   DWORD dwLength;
   exit_thread = 0;
 
