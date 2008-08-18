@@ -108,9 +108,14 @@ void LuaThread(void *) {
     strcat(name, ".lua");
     if(!luaL_loadfile (L, name)) {
       if(lua_pcall (L, 0, LUA_MULTRET, 0)) {
-	report (L);
-	lua_close (L);
-	return EXIT_FAILURE;
+	MessageBox(currenthWnd, lua_tostring(L, -1),
+	       "Error in Bootstrap Helper", MB_ICONERROR | MB_OK | MB_APPLMODAL);
+	xavante_started = 0;
+	lua_close(L);
+	if(aux) fclose(aux);
+	if(log) fclose(log);
+	ReleaseSemaphore(hStopSemaphore, 1, NULL);
+	_endthread();
       }
     }
   }
