@@ -33,7 +33,7 @@ then
    USE_READLINE=no
 fi
 
-LUA_VERSION=5.1.3
+LUA_VERSION=5.1.4
 KEPLER_VERSION=0.4
 LUAROCKS_URL=
 LUAROCKS_VERSION=1.0-rc2
@@ -168,8 +168,13 @@ then
 fi
 echo
 echo "Proceed with setup? [Y/n] "
-read yesno
-if [ $yesno = "n" -o $yesno = "N" ]
+read YESNO
+if [ "$YESNO" = "n" ]
+then
+  echo "Setup aborted"
+  exit 1
+fi
+if [ "$YESNO" = "N" ]
 then
   echo "Setup aborted"
   exit 1
@@ -356,10 +361,10 @@ klean:
 
 EOF
 
-cat <<EOF > lua-5.1.3-easylua.diff
-diff -Naur lua-5.1.3-orig/Makefile lua-5.1.3/Makefile
---- lua-5.1.3-orig/Makefile	2007-03-25 11:44:39.000000000 -0300
-+++ lua-5.1.3/Makefile	2007-05-11 16:08:02.000000000 -0300
+cat <<EOF > lua-5.1.4-easylua.diff
+diff -Naur lua-5.1.4-orig/Makefile lua-5.1.4/Makefile
+--- lua-5.1.4-orig/Makefile	2007-03-25 11:44:39.000000000 -0300
++++ lua-5.1.4/Makefile	2007-05-11 16:08:02.000000000 -0300
 @@ -41,10 +41,10 @@
  PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
  
@@ -374,7 +379,7 @@ diff -Naur lua-5.1.3-orig/Makefile lua-5.1.3/Makefile
  
  # Lua version and release.
  V= 5.1
-@@ -56,13 +56,17 @@
+@@ -56,11 +56,15 @@
  	cd src && \$(MAKE) \$@
  
  test:	dummy
@@ -382,7 +387,8 @@ diff -Naur lua-5.1.3-orig/Makefile lua-5.1.3/Makefile
 +	src/lua\$(LUA_SUFFIX) test/hello.lua
  
  install: dummy
- 	cd src && \$(MKDIR) -p \$(INSTALL_BIN) \$(INSTALL_INC) \$(INSTALL_LIB) \$(INSTALL_MAN) \$(INSTALL_LMOD) \$(INSTALL_CMOD)
+-	cd src && \$(MKDIR) \$(INSTALL_BIN) \$(INSTALL_INC) \$(INSTALL_LIB) \$(INSTALL_MAN) \$(INSTALL_LMOD) \$(INSTALL_CMOD)
++	cd src && \$(MKDIR) -p \$(INSTALL_BIN) \$(INSTALL_INC) \$(INSTALL_LIB) \$(INSTALL_MAN) \$(INSTALL_LMOD) \$(INSTALL_CMOD)
  	cd src && \$(INSTALL_EXEC) \$(TO_BIN) \$(INSTALL_BIN)
  	cd src && \$(INSTALL_DATA) \$(TO_INC) \$(INSTALL_INC)
  	cd src && \$(INSTALL_DATA) \$(TO_LIB) \$(INSTALL_LIB)
@@ -391,11 +397,9 @@ diff -Naur lua-5.1.3-orig/Makefile lua-5.1.3/Makefile
 +	mv doc/t_lua.1 doc/lua\$(LUA_SUFFIX).1
 +	mv doc/t_luac.1 doc/luac\$(LUA_SUFFIX).1
  	cd doc && \$(INSTALL_DATA) \$(TO_MAN) \$(INSTALL_MAN)
- #	\$(RANLIB) \$(INSTALL_LIB)/\$(TO_LIB)
- 
-diff -Naur lua-5.1.3-orig/src/luaconf.h lua-5.1.3/src/luaconf.h
---- lua-5.1.3-orig/src/luaconf.h	2007-03-24 00:01:55.000000000 -0300
-+++ lua-5.1.3/src/luaconf.h	2007-05-11 16:12:55.000000000 -0300
+diff -Naur lua-5.1.4-orig/src/luaconf.h lua-5.1.4/src/luaconf.h
+--- lua-5.1.4-orig/src/luaconf.h	2007-03-24 00:01:55.000000000 -0300
++++ lua-5.1.4/src/luaconf.h	2007-05-11 16:12:55.000000000 -0300
 @@ -94,9 +94,11 @@
  	".\\\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
  
@@ -411,9 +415,9 @@ diff -Naur lua-5.1.3-orig/src/luaconf.h lua-5.1.3/src/luaconf.h
  #define LUA_PATH_DEFAULT  \\
  		"./?.lua;"  LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \\
  		            LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua"
-diff -Naur lua-5.1.3-orig/src/Makefile lua-5.1.3/src/Makefile
---- lua-5.1.3-orig/src/Makefile	2007-03-25 11:49:23.000000000 -0300
-+++ lua-5.1.3/src/Makefile	2007-05-11 16:08:02.000000000 -0300
+diff -Naur lua-5.1.4-orig/src/Makefile lua-5.1.4/src/Makefile
+--- lua-5.1.4-orig/src/Makefile	2007-03-25 11:49:23.000000000 -0300
++++ lua-5.1.4/src/Makefile	2007-05-11 16:08:02.000000000 -0300
 @@ -22,17 +22,17 @@
  
  PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
@@ -511,13 +515,10 @@ echo "========================================================="
 echo
 echo
 
-if [ $KEPLER_ROCK_VERSION = "cvs" ]
+if [ "$KEPLER_ROCK_VERSION" = "cvs" ]
 then
   $PREFIX/bin/luarocks install --from=http://www.lua.inf.puc-rio.br/rocks-cvs kepler-xavante $KEPLER_ROCK_VERSION KEPLER_WEB=$WEB
-fi
-
-if [ $KEPLER_ROCK_VERSION != "cvs" ]
-then
+else
   $PREFIX/bin/luarocks install kepler-xavante $KEPLER_ROCK_VERSION KEPLER_WEB=$WEB
 fi
 

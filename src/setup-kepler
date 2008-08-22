@@ -103,7 +103,8 @@ KEPLER_APPS = KEPLER_APPS or PREFIX .. "/apps"
 KEPLER_TMP = KEPLER_TMP or "/tmp"
 KEPLER_LOG = KEPLER_LOG or PREFIX .. "/log"
 
-print("This is the Kepler 1.1 setup.")
+print()
+print("Please review Kepler's configuration.")
 print()
 print("Kepler configuration: " .. KEPLER_CONF)
 print("Kepler web root:      " .. KEPLER_WEB)
@@ -111,10 +112,10 @@ print("Kepler apps:          " .. KEPLER_APPS)
 print("Kepler logs:          " .. KEPLER_LOG)
 print("Kepler temp dir:      " .. KEPLER_TMP)
 print()
-io.write("Proceed with setup? [Y/n] ")
+io.write("Configure Kepler with these parameters? [Y/n] ")
 yesno = io.read("*l")
 if yesno:match("%s*n%s*") then
-  print("Setup aborted")
+  print("Aborted. Please run setup-kepler to configure Kepler with your desired parameters.")
   os.exit(1)
 end
 
