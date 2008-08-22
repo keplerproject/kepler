@@ -35,7 +35,7 @@ fi
 
 LUA_VERSION=5.1.3
 KEPLER_VERSION=0.4
-LUAROCKS_URL=http://luarocks.luaforge.net/luarocks-1.0-rc2.tar.gz
+LUAROCKS_URL=
 LUAROCKS_VERSION=1.0-rc2
 KEPLER_ROCK_VERSION=cvs
 SKIP_KEPLER=no
@@ -480,15 +480,25 @@ echo "========================================================="
 echo
 echo
 
-echo $WGET
+if [ $LUAROCKS_URL != "" ]
+then
 
 $WGET $LUAROCKS_URL
 
 tar zxvf luarocks-$LUAROCKS_VERSION.tar.gz
 cd luarocks-$LUAROCKS_VERSION
+
+else
+
+cvs -d:pserver:anonymous@cvs.luaforge.net:/cvsroot/luarocks export -r HEAD luarocks
+cd luarocks
+
+fi
+
 sh configure --prefix=$PREFIX --with-lua=$PREFIX \
   --with-lua-include=$LUA_INCDIR \
   --rocks-tree=$PREFIX && make && make install
+
 
 if ! [ $SKIP_KEPLER = "yes" ] 
 then
