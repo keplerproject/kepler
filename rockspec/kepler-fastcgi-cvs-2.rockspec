@@ -19,23 +19,28 @@ source = {
 }
 
 build = {
-   type = "make",
-   build_pass = false,
-   install_target = "install-fastcgi",
-   install_variables = {
-     PREFIX  = "$(PREFIX)",
-     LUA_DIR = "$(LUADIR)",
-     BIN_DIR = "$(BINDIR)"
-   },
    platforms = {
-     win32 = {
+     unix = {
+       type = "none",
+       install = {
+         bin = { "src/cgilua.fcgi", "src/op.fcgi" },
+       },
+     },
+     windows = {
+       type = "make",
        build_pass = true,
        build_target = "fcgi",
        build_variables = {
          CFLAGS = "$(CFLAGS)",
 	 LUA_INCDIR = "$(LUA_INCDIR)",
 	 LUA_LIB = "$(LUA_LIBDIR)\\lua5.1.lib"
-       }
+       },
+       install_target = "install-fastcgi",
+       install_variables = {
+         PREFIX  = "$(PREFIX)",
+         LUA_DIR = "$(LUADIR)",
+         BIN_DIR = "$(BINDIR)"
+       },
      }
    }
 }
