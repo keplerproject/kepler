@@ -517,7 +517,7 @@ echo
 
 if [ "$KEPLER_ROCK_VERSION" = "cvs" ]
 then
-  $PREFIX/bin/luarocks install --from=http://www.lua.inf.puc-rio.br/rocks-cvs kepler-xavante $KEPLER_ROCK_VERSION KEPLER_WEB=$WEB
+  $PREFIX/bin/luarocks install --from=http://luarocks.luaforge.net/rocks-cvs kepler-xavante $KEPLER_ROCK_VERSION KEPLER_WEB=$WEB
 else
   $PREFIX/bin/luarocks install kepler-xavante $KEPLER_ROCK_VERSION KEPLER_WEB=$WEB
 fi
