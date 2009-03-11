@@ -14,7 +14,7 @@ FastCGI launcher. ]],
 dependencies = { "kepler >= 1.1.1", "wsapi-fcgi >= 1.1", "coxpcall >= 1.13" }
 
 source = {
-  url = ""
+  url = "http://luaforge.net/frs/download.php/3977/kepler-1.1.1.tar.gz"
 }
 
 build = {
