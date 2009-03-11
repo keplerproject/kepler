@@ -1,4 +1,4 @@
-1package = "Kepler"
+package = "Kepler"
 
 version = "1.1.1-1"
 
