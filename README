@@ -1,0 +1,33 @@
+Kepler 1.1.1
+http://www.keplerproject.org
+
+Kepler is a Lua web development platform that offers the same advantages of Lua.
+Kepler is simple, portable, light, embeddable and extensible.
+
+The Kepler Platform consists in distributions for Windows, Unix and OSX and allows
+the development of Web Applications using WSAPI, Orbit or CGILua technologies;
+the user can also choose to use additional modules to support SQL, XML, Zip, MD5 etc.
+
+Kepler uses LuaRocks as its main deployment option, but can be used without LuaRocks
+if needed. The best option for deployment without LuaRocks is to first do a normal
+deployment (using LuaRocks) in a separate environment, then copying the modules to
+the final environment. This is the recommended solution for embedded scenarios
+(doing the LuaRocks-based deployment in your cross-compilation environment).
+
+Kepler is free software and uses the same license as Lua 5.1.
+
+Version 1.1.1 [11/Mar/2009]
+* Uses LuaRocks 1.0 as the main deployment option
+* Allows the offline installation of Kepler from a single tarball
+* Modules:
+    CGILua 5.1.3
+    Copas 1.1.4
+    Cosmo 8.04.14
+    Coxpcall 1.13
+    LPeg 0.9
+    LuaFileSystem 1.4.2
+    LuaSocket 2.0.2
+    Orbit 2.0.2
+    Rings 1.2.2
+    WSAPI 1.1
+    Xavante 2.0.1
