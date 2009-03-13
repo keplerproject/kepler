@@ -13,7 +13,7 @@ Kepler is a Lua web development platform that offers the same advantages of Lua.
 dependencies = { "wsapi >= 1.1", "cgilua >= 5.1.3", "orbit >= 2.0.2" }
 
 source = {
-  url = "http://luaforge.net/frs/download.php/3977/kepler-1.1.1.tar.gz"
+  url = "http://luaforge.net/frs/download.php/3983/kepler-1.1.1.tar.gz"
 }
 
 build = {
