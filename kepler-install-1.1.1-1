@@ -35,8 +35,8 @@ fi
 
 LUA_VERSION=5.1.4
 KEPLER_VERSION=0.4
-LUAROCKS_URL=http://luaforge.net/frs/download.php/3727/luarocks-1.0.tar.gz
-LUAROCKS_VERSION=1.0
+LUAROCKS_URL=http://luaforge.net/frs/download.php/3981/luarocks-1.0.1.tar.gz
+LUAROCKS_VERSION=1.0.1
 KEPLER_ROCK_VERSION=1.1.1
 SKIP_KEPLER=no
 
