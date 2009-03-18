@@ -169,15 +169,15 @@ if platform == "unix" then
   if write_conf then
     print("Copying configuration files to " .. KEPLER_CONF)
     os.execute("mkdir -p " .. KEPLER_CONF)
-    os.execute("cp -r " .. kepler_install_dir .. "/conf/* " .. KEPLER_CONF) 
+    os.execute("cp -R " .. kepler_install_dir .. "/conf/* " .. KEPLER_CONF) 
   end
   print("Copying docs and sample scripts to " .. KEPLER_WEB)
   os.execute("mkdir -p " .. KEPLER_WEB)
   os.execute("mkdir -p " .. KEPLER_WEB .. "/doc")
   os.execute("mkdir -p " .. KEPLER_WEB .. "/doc/kepler")
-  os.execute("cp -r " .. kepler_install_dir .. "/web/* " .. KEPLER_WEB) 
-  os.execute("cp -r " .. kepler_install_dir .. "/doc/us/* " .. KEPLER_WEB .. "/doc/kepler") 
-  os.execute("cp -r " .. kepler_install_dir .. "/css/* " .. KEPLER_WEB ..
+  os.execute("cp -R " .. kepler_install_dir .. "/web/* " .. KEPLER_WEB) 
+  os.execute("cp -R " .. kepler_install_dir .. "/doc/us/* " .. KEPLER_WEB .. "/doc/kepler") 
+  os.execute("cp -R " .. kepler_install_dir .. "/css/* " .. KEPLER_WEB ..
     "/css/") 
   print("Creating " .. KEPLER_APPS)
   os.execute("mkdir -p " .. KEPLER_APPS)
