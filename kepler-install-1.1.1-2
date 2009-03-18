@@ -4,6 +4,8 @@
 
 # Platform
 
+pushd `dirname $0`
+
 WGET="wget -c -t0"
 
 if [ "`echo ${OSTYPE%%[0-9]*}`" = "darwin" ]
