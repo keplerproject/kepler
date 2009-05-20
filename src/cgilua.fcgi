@@ -10,6 +10,8 @@ pcall(require, "kepler_init")
 local common = require "wsapi.common"
 local fastcgi = require "wsapi.fastcgi"
 
+local reload = false -- set to true if you want to always run in a new state
+
 local function sapi_loader(wsapi_env)
   common.normalize_paths(wsapi_env, nil, "cgilua.fcgi")
   local bootstrap = ""
@@ -19,7 +21,7 @@ local function sapi_loader(wsapi_env)
       global .. "']\")\n"
   end
   local app = wsapi.common.load_isolated_launcher(wsapi_env.PATH_TRANSLATED, "wsapi.sapi",
-    bootstrap)
+    bootstrap, reload)
   return app(wsapi_env)
 end 
 
