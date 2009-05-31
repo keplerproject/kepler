@@ -4,6 +4,8 @@
 
 # Platform
 
+pushd `dirname $0`
+
 WGET="wget -c -t0"
 
 if [ "`echo ${OSTYPE%%[0-9]*}`" = "darwin" ]
@@ -34,9 +36,9 @@ then
 fi
 
 LUA_VERSION=5.1.4
-KEPLER_VERSION=0.4
-LUAROCKS_URL=http://luaforge.net/frs/download.php/3727/luarocks-1.0.tar.gz
-LUAROCKS_VERSION=1.0
+KEPLER_VERSION=0.5
+LUAROCKS_URL=http://luaforge.net/frs/download.php/3981/luarocks-1.0.1.tar.gz
+LUAROCKS_VERSION=1.0.1
 KEPLER_ROCK_VERSION=cvs
 SKIP_KEPLER=no
 
@@ -471,11 +473,21 @@ else
    MAKE=make
 fi
 
+cleanup() {
+  echo
+  echo "Cleaning up..."
+  echo
+
+  if [ -d $TMP/kepler-$KEPLER_VERSION ]; then
+    popd && rm -rf $TMP/kepler-$KEPLER_VERSION
+  fi
+}
+
 $MAKE clean > /dev/null 2> /dev/null
 
-$MAKE
+$MAKE || (echo "Failed compiling Lua. Exiting..."; cleanup; exit 1)
 
-$MAKE install
+$MAKE install || (echo "Failed installing Lua. Exiting..."; cleanup; exit 1)
 
 echo
 echo "Done. Lua is installed on $PREFIX."
@@ -508,7 +520,7 @@ fi
 
 sh configure --prefix=$PREFIX --with-lua=$PREFIX \
   --with-lua-include=$LUA_INCDIR \
-  --rocks-tree=$PREFIX && make && make install
+  --rocks-tree=$PREFIX && make && make install || (echo "Failed installing LuaRocks. Exiting..."; cleanup; exit 1)
 
 cd ..
 
@@ -523,7 +535,7 @@ echo "========================================================="
 echo
 
 if [ -d rocks ]; then
-  $PREFIX/bin/luarocks install kepler-xavante --only-from=./rocks $KEPLER_ROCK_VERSION KEPLER_WEB=$WEB
+  $PREFIX/bin/luarocks install kepler-xavante --only-from=`pwd`/rocks $KEPLER_ROCK_VERSION KEPLER_WEB=$WEB
 else
   if [ "$KEPLER_ROCK_VERSION" = "cvs" ]
   then
@@ -535,10 +547,6 @@ fi
 
 fi
 
-echo
-echo "Cleaning up..."
-echo
+cleanup
 
-if [ -d $TMP/kepler-$KEPLER_VERSION ]; then
-  popd && rm -rf $TMP/kepler-$KEPLER_VERSION
-fi
+
