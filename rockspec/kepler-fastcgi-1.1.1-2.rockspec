@@ -1,6 +1,6 @@
 package = "Kepler-Fastcgi"
 
-version = "cvs-2"
+version = "1.1.1-1"
 
 description = {
   summary = "The Lua Web Development Platform",
@@ -11,11 +11,10 @@ FastCGI launcher. ]],
   homepage = "http://www.keplerproject.org/kepler"
 }
 
-dependencies = { "kepler cvs", "wsapi-fcgi cvs", "coxpcall cvs", "rings cvs" }
+dependencies = { "kepler >= 1.1.1", "wsapi-fcgi >= 1.1", "coxpcall >= 1.13", "rings >= 1.2.2" }
 
 source = {
-  url = "cvs://:pserver:anonymous@cvs.luaforge.net:/cvsroot/kepler",
-  cvs_tag = "HEAD"
+  url = "http://luaforge.net/frs/download.php/3983/kepler-1.1.1.tar.gz"
 }
 
 build = {
