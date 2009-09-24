@@ -1,4 +1,4 @@
-1package = "Kepler"
+package = "Kepler"
 
 version = "cvs-2"
 

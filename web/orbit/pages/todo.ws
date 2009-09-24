@@ -16,8 +16,8 @@ local function item_list()
 end
 
 local function index(web)
-  local list = web:template(todo.items, { items = item_list() })
-  return web:template(todo.index, { items = list })
+  local list = web:page_inline(todo.items, { items = item_list() })
+  return web:page_inline(todo.index, { items = list })
 end
 
 todo:dispatch_get(index, "/")
@@ -26,7 +26,7 @@ local function add(web)
   local item = todo_list:new()
   item.title = web.input.item or ""
   item:save()
-  return web:template(todo.items, { items = item_list() })
+  return web:page_inline(todo.items, { items = item_list() })
 end
 
 todo:dispatch_post(add, "/add")
@@ -34,7 +34,7 @@ todo:dispatch_post(add, "/add")
 local function remove(web, id)
   local item = todo_list:find(tonumber(id))
   item:delete()
-  return web:template(todo.items, { items = item_list() })
+  return web:page_inline(todo.items, { items = item_list() })
 end
 
 todo:dispatch_post(remove, "/remove/(%d+)")
