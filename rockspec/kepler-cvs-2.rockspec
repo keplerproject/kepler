@@ -13,8 +13,7 @@ Kepler is a Lua web development platform that offers the same advantages of Lua.
 dependencies = { "wsapi cvs", "cgilua cvs", "orbit cvs" }
 
 source = {
-  url = "cvs://:pserver:anonymous@cvs.luaforge.net:/cvsroot/kepler",
-  cvs_tag = "HEAD"
+  url = "git://github.com/keplerproject/kepler.git"
 }
 
 build = {
