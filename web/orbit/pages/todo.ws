@@ -57,18 +57,18 @@ todo.index = [===[
   function set_callbacks() {
     $(".remove").click(function () {
       $("#items>[item_id=" + $(this).attr("item_id") +"]").slideUp("slow");
-    $("#items").load("todo.op", { id: $(this).attr("item_id"), remove: true },
+    $("#items").load("todo.ws/remove/" + $(this).attr("item_id")", {},
       function () { set_callbacks(); });
     });
     $(".item").click(function () {
-      $.post("todo.op", { id: $(this).attr("item_id"), toggle: true });
+      $.post("todo.ws/toggle/" + $(this).attr("item_id"), {});
     });
   }
 
   $(document).ready(function () {
     $("#add").submit(function () {
       $("#button").attr("disabled", true);
-      $("#items").load("todo.op", { item: $("#title").val()  }, 
+      $("#items").load("todo.ws/add", { item: $("#title").val()  }, 
         function () { $("#title").val(""); set_callbacks(); 
         $("#button").attr("disabled",false); });
       return false;
