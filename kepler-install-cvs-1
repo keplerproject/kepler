@@ -41,6 +41,7 @@ LUAROCKS_URL=http://luaforge.net/frs/download.php/3981/luarocks-1.0.1.tar.gz
 LUAROCKS_VERSION=1.0.1
 KEPLER_ROCK_VERSION=cvs
 SKIP_KEPLER=no
+SKIP_LR=no
 
 # Help
 
@@ -73,6 +74,7 @@ Installs Lua $LUA_VERSION, LuaRocks $LUAROCKS_VERSION and Kepler $KEPLER_ROCK_VE
 --with-kepler=VERSION       Installs the provided Kepler version instead
                             of Kepler $KEPLER_ROCK_VERSION
 --without-kepler            Does not install Kepler, just Lua and LuaRocks
+--without-rocks             Does not install LuaRocks and Kepler, just Lua
 
 EOF
 }
@@ -127,6 +129,10 @@ do
       ;;
    --without-kepler*)
       SKIP_KEPLER=yes
+      ;;
+   --without-rocks*)
+      SKIP_KEPLER=yes
+      SKIP_LR=yes
       ;;
    --without-readline)
       USE_READLINE=no
@@ -493,6 +499,9 @@ echo
 echo "Done. Lua is installed on $PREFIX."
 echo
 
+if ! [ $SKIP_LR = "yes" ] 
+then
+
 echo
 echo
 echo "========================================================="
@@ -523,6 +532,8 @@ sh configure --prefix=$PREFIX --with-lua=$PREFIX \
   --rocks-tree=$PREFIX && make && make install || (echo "Failed installing LuaRocks. Exiting..."; cleanup; exit 1)
 
 cd ..
+
+fi
 
 if ! [ $SKIP_KEPLER = "yes" ] 
 then
